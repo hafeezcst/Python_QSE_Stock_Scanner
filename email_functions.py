@@ -16,19 +16,17 @@ def send_email(subject, body, attachment_path=None) :
     :param body:
     :param attachment_path:
     """
-    # Email configuration
-    sender_email = "hafeezcst@gmail.com"  # Replace with your email address
-    receiver_emails = [ "hafeezcst@gmail.com", "ammarhafeez3495@gmail.com",
-                        "amok3495@gmail.com" ]  # Replace with the recipient's email addresses
-    # receiver_email = ", ".join(receiver_emails)
-    smtp_server = "smtp.gmail.com"  # Replace with your SMTP server (e.g., smtp.gmail.com for Gmail)
-    smtp_port = 587  # Replace with your SMTP port (587 is the default for TLS)
-    
-    # Load email credentials from config file
+    # Load email configuration from config file
     config = configparser.ConfigParser ( )
     config.read ( 'config.ini' )
     username = config.get ( 'email', 'username' )
     password = config.get ( 'email', 'password' )
+    sender_email = config.get ( 'email', 'sender' )
+    receiver_emails = [ email.strip() for email in config.get ( 'email', 'receivers' ).split(',') ]
+    
+    # SMTP configuration
+    smtp_server = "smtp.gmail.com"  # Replace with your SMTP server (e.g., smtp.gmail.com for Gmail)
+    smtp_port = 587  # Replace with your SMTP port (587 is the default for TLS)
     
     # Create the email message
     message = MIMEMultipart ( )
